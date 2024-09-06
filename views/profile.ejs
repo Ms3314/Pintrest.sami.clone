@@ -12,25 +12,7 @@
         </form>
     </div>
     <div class="mt-10 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-        <% LoggedUser.boards.map(board => { %>
-            <div>
-                <div class=" w-full h-60 rounded-xl overflow-hidden">
-                    <img src="/<%= board.imagePath %>" alt="<%= board.title %>" class="w-full h-full object-cover">
-                </div>
-                <% const filePath = board.imagePath %>
-                <% const updatedPath = filePath.replace("uploads", '') %>
-                <%  console.log(filePath, "the old path") %>
-                <%  console.log(updatedPath , "the new path" ) %>
-                <form action="/delete/<%= filePath %>" method="post">
-                    <button class="text-red-500">
-                        Delete
-                    </button>
-                </form>
-                
-            </div>
-                
-            
-        <% }) %>
+       
     </div>
     
     

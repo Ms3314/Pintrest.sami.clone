@@ -3,23 +3,7 @@
     <%- include('./partials/Navbar.ejs') %>
 
     <div class=" p-3 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-        <% const boardList = typeof boards !== 'undefined' ? boards : []; %>
-        <% if (boardList.length > 0) { %>
-            <% boardList.map(board => { %>
-                <div class="relative w-full h-60 rounded-xl overflow-hidden group">
-                    <img src="/<%= board.imagePath %>" alt="<%= board.title %>" class="w-full h-full object-cover transition-opacity duration-300 group-hover:opacity-50">
-                    <div class="absolute inset-0 flex-col text-end pt-[150px] pr-10 opacity-0 transition-opacity duration-300 group-hover:opacity-100 bg-black bg-opacity-50 text-white">
-                        <p>@<%= board.username %></p>
-                        <p><%= board.email %></p>
-                        <form action="/save/<%= board.imagePath %>" method="post">
-                            <button>Save</button>
-                        </form>
-                    </div>
-                </div>
-            <% }) %>
-        <% } else { %>
-            <p>Add your first pin</p>
-        <% } %>
+        
         
 
         

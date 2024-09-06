@@ -8,12 +8,9 @@ const expressSession = require("express-session")
 
 
 // the imports for the multer thingy 
-
-
-
 // Require the router
-const indexRouter = require('./routes/index');
-const usersRouter = require("./routes/users")
+const indexRouter = require('./index');
+// const usersRouter = require("./routes/users")
 
 // Set the view engine to EJS
 app.set('view engine', 'ejs');
