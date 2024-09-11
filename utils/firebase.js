@@ -14,7 +14,7 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-const storage = getStorage(app);
+const storage = getStorage(app , "pintres-project.appspot.com" );
 
 
 

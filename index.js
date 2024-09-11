@@ -10,7 +10,7 @@ const fs = require('fs');
 const {uploadToFirebase} =   require('./utils/firebaseFn.js')
 const contentModel = require('./schema/content.js')
 const {isLoggedIn} = require('./functions/CommonFn.js')
-const {listAllFiles} = require('./utils/firebaseFn.js')
+const {listAllImagesWithMetadata} = require('./utils/firebaseFn.js')
 // adding all the get requests for different pages over here 
 
 router.get("/", isLoggedIn , function(req , res ) {
@@ -44,7 +44,7 @@ router.get("/profile", isLoggedIn  ,async function(req , res , next) {
 router.get("/home" , isLoggedIn ,async function(req , res , next ) {
     try {
         const users = await userModel.find({} , 'boards' ) 
-        const files = await listAllFiles('images')
+        const files = await listAllImagesWithMetadata('images')
         console.log(files , "this is the files from the firebase ")
         res.render("home" )
     } catch (error) {
