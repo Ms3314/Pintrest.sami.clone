@@ -1,6 +1,5 @@
 const express = require('express');
 const app = express();
-const port = 3000;
 const cookieParser = require('cookie-parser')
 const path = require('path')
 const logger = require("morgan")
@@ -19,7 +18,6 @@ app.use(cookieParser());
 app.use(express.json())
 app.use(logger('dev'))
 app.use(express.urlencoded({extended : false }))
-app.use('/uploads', express.static('uploads'));
 
 // iitializing the passport and all stufffs 
 
@@ -33,9 +31,16 @@ app.use(expressSession({
 // Use the router
 app.use('/', indexRouter);
 
-app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
+// Error handler middleware
+app.use((err, req , res, next) => {
+    console.error(err.stack);
+    res.status(500).send('Something went wrong!');
 });
+
+
+app.listen(3000 , () => {
+    console.log("port is running on 3000")
+})
 
 // the main multer code 
 

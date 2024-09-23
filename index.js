@@ -9,8 +9,9 @@ const path = require('path');
 const fs = require('fs');
 const {uploadToFirebase} =   require('./utils/firebaseFn.js')
 const contentModel = require('./schema/content.js')
-const {isLoggedIn} = require('./functions/CommonFn.js')
-const {listAllImagesWithMetadata} = require('./utils/firebaseFn.js')
+const {isLoggedIn} = require('./functions/CommonFn.js');
+const content = require('./schema/content.js');
+// const {listAllImagesWithMetadata} = require('./utils/firebaseFn.js')
 // adding all the get requests for different pages over here 
 
 router.get("/", isLoggedIn , function(req , res ) {
@@ -29,24 +30,23 @@ router.get("/profile", isLoggedIn  ,async function(req , res , next) {
     try {
     const userid = req.user
     const LoggedUser = await userModel.findOne({_id : userid})
+    const userContent = await contentModel.find({user : userid})
     username = LoggedUser.username
     email = LoggedUser.email
     res.render("profile" , {
-        username , email , LoggedUser 
+        username , email , LoggedUser , userContent
 
     })
     } catch (error) {
-        console.error('Error fetching boards or some other error :', err);
+        console.error('Error fetching boards or some other error :', error);
     }
 
 })
 
 router.get("/home" , isLoggedIn ,async function(req , res , next ) {
     try {
-        const users = await userModel.find({} , 'boards' ) 
-        const files = await listAllImagesWithMetadata('images')
-        console.log(files , "this is the files from the firebase ")
-        res.render("home" )
+        // console.log(files , "this is the files from the firebase ")
+        res.render("home")
     } catch (error) {
         console.error('Error fetching files:', error);
         res.status(500).send('Server Error');
@@ -120,43 +120,57 @@ const upload = multer({
   });
 
 
-router.post("/upload", isLoggedIn , upload.single('myFile') , async  (req,res)=> {
+  router.post("/upload", isLoggedIn, upload.single('myFile'), async (req, res) => {
     try {
-        console.log(req.file , "this is the file uploaded ")
-        console.log(req.user , "this is the user id maybe ")
-        const user = await userModel.findOne({_id : req.user})
-        console.log(user , "this is the user data from the database ")
-        if(req.file) {
-        const newContent = new contentModel({
-            imagePath : req.file.originalname,
-            title : req.body.title || 'pin',
-            description : req.body.description || 'pin',
-            tags : req.body.tags || [],
-            createdAt : new Date(),
-            updatedAt : new Date(),
-            user : req.user,
-        })
-        console.log(req.file , "this is the fike")
-        console.log(req.file.path , 'FILEPATH')
-        console.log(req.user , "this is the user")
-        await newContent.save()
-        const url = await uploadToFirebase(req.file , req.user).catch((err)=>console.log(err))
+        // Check if file is uploaded
+        if (!req.file) {
+            return res.status(400).send("No file is uploaded");
+        }
 
-        newContent.imagePath = url
-        console.log(newContent , "this is the new content ")
-        // res.status(200).send(url)
-       
-        // user.boards.push(newContent)
-        // await user.save()
-        res.redirect("/home")
-    }else {
-        res.status(400).send("No file is uploaded")
-    }
+        console.log(req.file, "this is the uploaded file");
+        console.log(req.user, "this is the user id maybe");
+
+        // Find the user in the database
+        const user = await userModel.findOne({ _id: req.user });
+        if (!user) {
+            return res.status(404).send("User not found");
+        }
+        
+        console.log(user, "this is the user data from the database");
+
+        // Upload file to Firebase (or another service) and get the URL
+        const url = await uploadToFirebase(req.file, req.user);
+        if (!url) {
+            return res.status(500).send("File upload to Firebase failed");
+        }
+
+        // Create new content document
+        const newContent = new contentModel({
+            imagePath: url,                       // File URL from Firebase
+            title: req.body.title || 'pin',       // Default title if none provided
+            description: req.body.description || 'pin', // Default description
+            tags: req.body.tags || [],            // Optional tags
+            createdAt: new Date(),
+            updatedAt: new Date(),
+            user: req.user,                       // Associate content with the user
+        });
+
+        // Save the new content to the database
+        await newContent.save();
+        console.log(newContent, "this is the new content");
+
+        // (Optional) Associate new content with user's boards and save
+        // user.boards.push(newContent);
+        // await user.save();
+
+        // Redirect to home page
+        res.redirect("/home");
+
     } catch (error) {
-        console.log(error)
-        res.status(500).send("An error occured")
+        console.error(error);
+        res.status(500).send("An error occurred while processing the upload");
     }
-})
+});
 
 
 
