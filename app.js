@@ -4,11 +4,10 @@ const cookieParser = require('cookie-parser')
 const path = require('path')
 const logger = require("morgan")
 const expressSession = require("express-session")
-
+const allRoutes = require("./routes/allBasicRoutes")
 
 // the imports for the multer thingy 
-// Require the router
-const indexRouter = require('./index');
+// Require the router');
 // const usersRouter = require("./routes/users")
 
 // Set the view engine to EJS
@@ -21,15 +20,11 @@ app.use(express.urlencoded({extended : false }))
 
 // iitializing the passport and all stufffs 
 
-app.use(expressSession({
-    resave :false ,
-    saveUninitialized : false,
-    secret : "motorola"
-}))
+
 
 
 // Use the router
-app.use('/', indexRouter);
+app.use('/', allRoutes);
 
 // Error handler middleware
 app.use((err, req , res, next) => {
