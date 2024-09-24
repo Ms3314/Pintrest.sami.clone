@@ -1,45 +1,66 @@
 <%- include('./partials/header.ejs') %>
-<div class="w-full h-screen ">
+<div class="w-full h-screen">
     <%- include('./partials/Navbar.ejs') %>
-    <div class="flex flex-col p-10 justify-center  content-center w-full ">
-    <div class="flex flex-col justify-center items-center ">
-        <img class=" w-[170px] h-[170px] bg-gray-400 rounded-full" src="" alt="">
-        <p class="text-3xl font-bold mt-3 ">Hello <span><%= username %> !!</span></p>  
-        <p><%= email %></p>  
-        <form action="/upload" method="POST" enctype="multipart/form-data">
-            <input type="file" name="myFile" class="mt-5" required>
-            <button class="bg-green-600 mt-5 text-zinc-200 px-4 py-2  rounded-md " type="submit">Add Pin</button>
-        </form>
-    </div>
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 mt-10">
-        <% userContent.map(board => { %>
-          <div class="relative rounded-xl overflow-hidden group hover:shadow-lg transition-shadow duration-300">
-            <!-- Image container with varying heights -->
-            <div class="h-[300px] sm:h-[400px] md:h-[500px] lg:h-[400px]">
-              <img src="<%= board.imagePath %>" alt="<%= board.title %>" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
-            </div>
-            <% const filePath = board.imagePath %>
-            <% const updatedPath = filePath.replace("uploads", '') %>
-            <!-- Delete button, hidden until hover -->
-            <div class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              <form action="/delete/<%= filePath %>" method="post">
-                <button class="bg-red-500 text-white px-2 py-1 rounded-full shadow-md hover:bg-red-600">
-                  Delete
-                </button>
-              </form>
-            </div>
-          </div>
-        <% }) %>
-      </div>
-    <div class="mt-10 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-       
-    </div>
-    
-    
-    
+    <div class="flex flex-col p-10 justify-center content-center w-full">
+        <div class="flex flex-col justify-center items-center">
+            <img class="w-[170px] h-[170px] bg-gray-400 rounded-full" src="<%= profileImage || 'default_profile_pic_url.jpg' %>" alt="Profile Picture">
+            <p class="text-3xl font-bold mt-3"><span><%= username %></span></p>
+            <p><%= email %></p>
+        </div>
+        
+        <!-- Profile Picture Update Section -->
+        <div class="mt-5">
+            <form action="/updateProfilePic" method="post" enctype="multipart/form-data" id="profilePicForm" class="flex flex-col items-center">
+                <label class="relative inline-flex items-center justify-center w-full">
+                    <input type="file" name="profilePic" accept="image/*" id="profilePicInput" class="hidden" required>
+                    <span class="bg-blue-500 text-white px-4 py-2 rounded-md cursor-pointer hover:bg-blue-600 transition">Change Profile Picture</span>
+                </label>
+            </form>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 mt-10">
+            <% if(userContent.length > 0) { %>    
+                <% userContent.map(board => { %>
+                    <div class="relative rounded-xl overflow-hidden group hover:shadow-lg transition-shadow duration-300">
+                        <!-- Image container with varying heights -->
+                        <div class="h-[300px] sm:h-[400px] md:h-[500px] lg:h-[400px]">
+                            <img src="<%= board.imagePath %>" alt="<%= board.title %>" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                        </div>
+                        
+                        <!-- Delete button, hidden until hover -->
+                        <div class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <form action="/delete/<%=encodeURIComponent(board.imagePath) %>" method="post">
+                                <button class="bg-red-500 text-white px-2 py-1 rounded-full shadow-md hover:bg-red-600">
+                                    Delete
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                <% }) %>
+            <% } else { %>
+                <p class="lg:ml-[430px] lg:text-3xl lg:w-[1000px] md:ml[200px]">No posts yet, why don't you create some? :)</p>
+            <% } %>    
+        </div>
+
+        <div class="mt-10 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+            <!-- Additional content can go here -->
+        </div>
     </div>
 </div>
 <%- include('./partials/footer.ejs') %>
+
+<script>
+    document.getElementById('profilePicInput').addEventListener('change', function() {
+        // Submit the form when a file is selected
+        document.getElementById('profilePicForm').submit();
+    });
+</script>
+
+
+
+
+
+
 
 
 

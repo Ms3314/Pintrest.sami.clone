@@ -1,0 +1,23 @@
+<%- include('./partials/header.ejs') %>
+<div class="w-full h-screen ">
+    <%- include('./partials/Navbar.ejs') %>
+  
+    <form action="/upload" class="pb-10 mx-auto mt-10 flex flex-col gap-6 max-w-[600px] p-6 bg-zinc-900 rounded-lg shadow-lg" method="POST" enctype="multipart/form-data">
+      <label for="title" class="text-lg font-semibold text-zinc-200">Title:</label>
+      <input type="text" id="title" name="title" required class="bg-zinc-800 border border-zinc-600 text-zinc-200 px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
+  
+      <label for="description" class="text-lg font-semibold text-zinc-200">Description:</label>
+      <textarea id="description" name="description" required class="h-[120px] bg-zinc-800 border border-zinc-600 text-zinc-200 px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"></textarea>
+  
+      <label for="myFile" class="text-lg font-semibold text-zinc-200">Upload File:</label>
+      <input type="file" id="myFile" name="myFile" class="mt-2 text-zinc-200 bg-zinc-800 border border-zinc-600 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500" required>
+  
+      <button class="bg-green-600 text-zinc-200 px-4 py-2 rounded-md hover:bg-green-500 transition duration-200" type="submit">Add Pin</button>
+  </form>
+  <br>
+</div>
+<%- include('./partials/footer.ejs') %>
+
+
+
+

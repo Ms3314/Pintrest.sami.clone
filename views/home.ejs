@@ -1,19 +1,40 @@
 <%- include('./partials/header.ejs') %>
-<div class="w-full h-screen ">
+
+<div class="w-full h-screen">
+    <%- include('./partials/header.ejs') %>
+
+<div class="w-full h-screen">
     <%- include('./partials/Navbar.ejs') %>
 
-    <div class=" p-3 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-        
-        <div id="imageContainer">
-            <img id="imagePreview" src="https://firebasestorage.googleapis.com/v0/b/pintres-project.appspot.com/o/images%2F1727069649307-head%20of%20marketting%20pic.jpeg?alt=media&token=40cdf214-fcdf-47f1-8c22-4e4d580f2b3b" alt="Image preview will appear here" style="max-width: 300px;"/>
-        </div>
-
-        
+    <!-- Container for content -->
+    <div class="p-3 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+        <!-- Loop through userContent to display each content's image and title -->
+        <% userContent.forEach(board => { %>
+            <div class="relative rounded-xl overflow-hidden group transition-shadow duration-300">
+                <!-- Image container with dynamic heights -->
+                <img src="<%= board.imagePath %>" alt="<%= board.title %>" class="w-full h-[350px] object-cover transition-transform duration-500 group-hover:scale-105">
+                
+                <!-- Grey overlay and content (hidden until hover) -->
+                <div class="absolute inset-0 bg-gray-800 bg-opacity-75 flex flex-col justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-white p-4">
+                    <form action="/savepin/<%=encodeURIComponent(board.imagePath) %>" method="post">
+                        <!-- Save button in the top right -->
+                        <button class="absolute top-4 right-4 bg-red-500 text-white px-4 py-2 rounded-full shadow-md hover:bg-red-600">
+                            Save
+                        </button>
+                        
+                        <!-- Pin title and description in the center -->
+                        <h2 class="text-lg font-bold mt-4"><%= board.title %></h2>
+                        <p class="text-sm mt-2"><%= board.description %></p>
+                    </form>
+                </div>
+                
+                
+            </div>
+        <% }) %>
     </div>
-    
-
-
 </div>
+
 <%- include('./partials/footer.ejs') %>
+
 
 

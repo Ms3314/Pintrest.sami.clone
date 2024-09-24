@@ -67,6 +67,37 @@ const uploaderFunction =  async (req, res) => {
     }
 }
 
+const uploaderFunctionProfile =  async (req, res) => {
+    try {
+        console.log(req.file)
+        // Check if file is uploaded
+        if (!req.file) {
+            return res.status(400).send("No file is uploaded");
+        }
+
+        // Find the user in the database
+        const user = await userModel.findOne({ _id: req.user });
+        if (!user) {
+            return res.status(404).send("User not found");
+        }
+        
+        // Upload file to Firebase (or another service) and get the URL
+        const url = await uploadToFirebase(req.file, req.user);
+        if (!url) {
+            return res.status(500).send("File upload to Firebase failed");
+        }
+
+        // Create new content document
+        user.profileImage = url
+        user.save()
+
+        res.redirect("/profile");
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("An error occurred while processing the upload");
+    }
+}
 
 
 // logging out 
@@ -119,5 +150,5 @@ const uploaderFunction =  async (req, res) => {
 
 
 module.exports = {
-    uploaderFunction
+    uploaderFunction , uploaderFunctionProfile
 };

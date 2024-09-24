@@ -50,8 +50,9 @@ async function  profileFunction  (req , res , next) {
     const userContent = await contentModel.find({user : userid})
     username = LoggedUser.username
     email = LoggedUser.email
+    profileImage = LoggedUser.profileImage
     res.render("profile" , {
-        username , email , LoggedUser , userContent
+        username , email , LoggedUser , userContent , profileImage
 
     })
     } catch (error) {
@@ -64,9 +65,10 @@ async function  homeFunction  (req , res , next) {
     const userid = req.user
     const LoggedUser = await userModel.findOne({_id : userid})
     const userContent = await contentModel.find({})
+    console.log(userContent)
     username = LoggedUser.username
     email = LoggedUser.email
-    res.render("" , {
+    res.render("home" , {
         username , email , LoggedUser , userContent
 
     })
@@ -78,7 +80,7 @@ async function  homeFunction  (req , res , next) {
 
 
 
-const logoutFn = () => {
+const logoutFn = (req , res) => {
     res.clearCookie("token")
     res.redirect("/login")
 }
@@ -104,5 +106,5 @@ async function registerFn (req , res) {
 
 
 module.exports = {
-    logoutFn , profileFunction ,  loginFn  , registerFn
+    logoutFn , profileFunction ,  loginFn  , registerFn , homeFunction
 }

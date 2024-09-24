@@ -1,11 +1,41 @@
-<nav class="flex p-3 justify-between text-zinc-200 ">
-    <p class="text-2xl font-bold">Pintrest Clone </p>
-    <div class="flex">
-        <a href="/home" class="  font-bold px-4 py-2  rounded-md ml-10">Home</a>
-        <a href="/savedpins" class=" font-bold px-4 py-2  rounded-md ml-10">Saved Pins</a>
-        <a href="/profile" class=" font-bold px-4 py-2  rounded-md ml-10">Profile</a>
+<nav class="flex p-3 justify-between items-center text-zinc-200 bg-zinc-800">
+    <div class="flex items-center">
+        <p class="text-2xl font-bold hidden md:block">Pintrest Clone</p>
+        <div class="md:hidden">
+            <button id="hamburger" class="flex items-center focus:outline-none">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                </svg>
+            </button>
+        </div>
+    </div>
+    <div id="nav-links" class="hidden md:flex md:items-center">
+        <a href="/home" class="font-bold px-4 py-2 rounded-md ml-10 hover:bg-zinc-600">Home</a>
+        <a href="/savedpins" class="font-bold px-4 py-2 rounded-md ml-10 hover:bg-zinc-600">Saved Pins</a>
+        <a href="/profile" class="font-bold px-4 py-2 rounded-md ml-10 hover:bg-zinc-600">Profile</a>
+        <a href="/create" class="font-bold px-4 py-2 rounded-md ml-10 hover:bg-zinc-600">Create</a>
         <form action="/logout" method="post">
-            <button class="bg-red-600 text-zinc-200 px-4 py-2  rounded-md ml-10" type="submit">Logout</button>
+            <button class="bg-red-600 text-zinc-200 px-4 py-2 rounded-md ml-10 hover:bg-red-500" type="submit">Logout</button>
         </form>
     </div>
 </nav>
+
+<!-- Mobile Navigation -->
+<div id="mobile-menu" class="hidden md:hidden bg-zinc-800 p-3">
+    <a href="/home" class="block font-bold px-4 py-2 rounded-md hover:bg-zinc-600">Home</a>
+    <a href="/savedpins" class="block font-bold px-4 py-2 rounded-md hover:bg-zinc-600">Saved Pins</a>
+    <a href="/profile" class="block font-bold px-4 py-2 rounded-md hover:bg-zinc-600">Profile</a>
+    <a href="/create" class="block font-bold px-4 py-2 rounded-md hover:bg-zinc-600">Create</a>
+    <form action="/logout" method="post" class="mt-2">
+        <button class="bg-red-600 text-zinc-200 px-4 py-2 rounded-md hover:bg-red-500 w-full" type="submit">Logout</button>
+    </form>
+</div>
+
+<script>
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    hamburger.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+    });
+</script>

@@ -12,7 +12,7 @@ const userSchema = mongoose.Schema({
         ref : "content"
     },
     savedPins : {
-        type : mongoose.Schema.Types.ObjectId , 
+        type : [] , 
         ref : "content"
     }
 

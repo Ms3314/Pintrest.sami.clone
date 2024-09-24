@@ -27,6 +27,21 @@ async function uploadToFirebase(file , userid ) {
   }
   }
 
+  async function deleteImageFromFirebase(imagePath) {
+    // Create a reference to the file to delete
+
+    const imageRef = ref(storage, imagePath);
+
+    try {
+        // Delete the file
+        await deleteObject(imageRef);
+        console.log("Image deleted successfully");
+        return { success: true, message: "Image deleted successfully" };
+    } catch (error) {
+        console.error("Error deleting image:", error);
+        return { success: false, message: "Error deleting image", error };
+    }
+}
 
 
   // async function listAllImagesWithMetadata(directoryPath = 'images/') {
@@ -83,4 +98,4 @@ async function uploadToFirebase(file , userid ) {
   
   
 
-   module.exports = {uploadToFirebase }
+   module.exports = {uploadToFirebase , deleteImageFromFirebase }
