@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+require('dotenv').config();
 const cookieParser = require('cookie-parser')
 const path = require('path')
 const logger = require("morgan")
@@ -11,6 +12,7 @@ const allRoutes = require("./routes/allBasicRoutes")
 // const usersRouter = require("./routes/users")
 
 // Set the view engine to EJS
+
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname , 'views'));
 app.use(cookieParser());

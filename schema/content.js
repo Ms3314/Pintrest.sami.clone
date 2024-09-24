@@ -1,5 +1,5 @@
 const mongoose = require("mongoose")
-mongoose.connect("mongodb://localhost:27017/pin")
+
 const userSchema = require("./users")
 
 const contentSchema = mongoose.Schema({
