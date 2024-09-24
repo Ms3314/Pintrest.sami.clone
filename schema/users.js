@@ -1,6 +1,6 @@
 const mongoose = require("mongoose")
 
-mongoose.connect(process.env.MONGODB_ADRESS, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect("mongodb+srv://sami:yGhMicwI05cUaw9i@cluster0.dfjox.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0", { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('Database connected successfully!'))
   .catch((err) => console.log('Database connection error:', err));
 
