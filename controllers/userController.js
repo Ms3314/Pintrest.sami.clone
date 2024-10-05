@@ -65,7 +65,6 @@ async function  homeFunction  (req , res , next) {
     const userid = req.user
     const LoggedUser = await userModel.findOne({_id : userid})
     const userContent = await contentModel.find({})
-    console.log(userContent)
     username = LoggedUser.username
     email = LoggedUser.email
     res.render("home" , {
