@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const userModel = require("../schema/users.js") ; 
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 var jwt = require('jsonwebtoken');
 const JWT_SECRET = 'samiuddin'; 
 const multer = require('multer');
@@ -63,10 +63,17 @@ async function  profileFunction  (req , res , next) {
 async function  homeFunction  (req , res , next) {
     try {
     const userid = req.user
-    const LoggedUser = await userModel.findOne({_id : userid})
+    console.log(userid)
+    const LoggedUser = await userModel.findOne({_id : userid}).then((data)=>{
+        console.log("this is the LoggedUser data " , data)
+        username = data.username
+        email = data.email
+    })
+    .catch((err)=> {
+        console.log(err)
+    })
     const userContent = await contentModel.find({})
-    username = LoggedUser.username
-    email = LoggedUser.email
+    
     res.render("home" , {
         username , email , LoggedUser , userContent
 
